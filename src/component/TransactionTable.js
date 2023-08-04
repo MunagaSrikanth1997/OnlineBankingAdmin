@@ -4,21 +4,50 @@ import React, { useState, useEffect } from 'react';
 const TransactionTable = ({ transactions, transactionsPerPage }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(transactions.length / transactionsPerPage);
-
+  const [searchKey, setSearchKey] = useState('');
+  const [sortOrder, setSortOrder] = useState('desc');
   // Function to handle pagination navigation
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
+  const handleSortChange = () => {
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  };
   // Function to get transactions for the current page
   const getCurrentTransactions = () => {
     const startIndex = (currentPage - 1) * transactionsPerPage;
     const endIndex = startIndex + transactionsPerPage;
-    return transactions.slice(startIndex, endIndex);
+    const filteredTransactions = transactions.filter((transaction) =>
+    transaction.transactionId.includes(searchKey) ||
+    transaction.userId.includes(searchKey)
+  );
+  const sortedTransactions = filteredTransactions.sort((a, b) => {
+    const dateA = new Date(a.transactionDate);
+    const dateB = new Date(b.transactionDate);
+    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+  });
+
+  return sortedTransactions.slice(startIndex, endIndex);
+  };
+  const handleSearchChange = (event) => {
+    setSearchKey(event.target.value);
+    setCurrentPage(1); // Reset current page to 1 when search key changes
   };
 
   return (
     <div className="table-container">
+      <label>
+        search by UserId: 
+      <input
+        type="text"
+        value={searchKey}
+        onChange={handleSearchChange}
+        placeholder="Search UserId"
+      />
+      </label>
+      <button onClick={handleSortChange}>
+        Sort by Date ({sortOrder === 'asc' ? 'Ascending' : 'Descending'})
+      </button>
       <table>
         <thead>
           <tr>
@@ -34,7 +63,7 @@ const TransactionTable = ({ transactions, transactionsPerPage }) => {
         </thead>
         <tbody>
           {getCurrentTransactions().map((transaction) => (
-            <tr key={transaction.transactionId
+            <tr key={transaction.transactionId + transaction.userId
             }>
               <td>{transaction.userId}</td>
               <td>{transaction.transactionId}</td>

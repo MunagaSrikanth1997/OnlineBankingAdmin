@@ -8,7 +8,7 @@ const OpenAccountForm = ({ onClose }) => {
     accountName: '',
     accountType: '',
     userId:'',
-    isDebitCardRequired:'',
+    isDebitCardRequired:"false",
     depositAmount:''
     // Add more fields as needed
   });

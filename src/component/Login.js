@@ -30,9 +30,10 @@ const Login = ({onLoginSuccess}) => {
   };
 
   return (
-    <div>
+    <div className='login-form-container'>
+      <h1>Admin</h1>
       <h2>Login Page</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form-group">
         <div>
           <label>User ID:</label>
           <input
@@ -41,7 +42,7 @@ const Login = ({onLoginSuccess}) => {
             onChange={(e) => setUserId(e.target.value)}
           />
         </div>
-        <div>
+        <div className="form-group">
           <label>Password:</label>
           <input
             type="password"

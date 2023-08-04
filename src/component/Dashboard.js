@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Transactions from './Transactions';
 import Logout from './Logout';
-
+import CustomerRegistation from './CustomerRegistation';
 import OpenAccount from './OpenAccount';
 const Dashboard = ({loggedIn}) => {
   const [accounts, setAccounts] = useState([]);
@@ -41,16 +41,18 @@ const Dashboard = ({loggedIn}) => {
 
   return (
     <div>
-      <div>
+      <div className="card-container">
         <Logout/>
       
       
       </div>
+      <div className="matrix-item"> <CustomerRegistation/></div>
       <div className="container matrix-container">
       <a href="#openAccount" onClick={handlePopupToggle}>
         Open Account
       </a>
       {isPopupOpen && <OpenAccount onClose={handlePopupToggle} />}
+  
       <div className="matrix-item"> <Transactions/></div>
       </div>
     </div>
